@@ -4,103 +4,95 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import java.io.File;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import br.ufc.banco.conta.Conta;
 import br.ufc.banco.conta.ContaAbstrata;
 import br.ufc.banco.dados.excecoes.CEException;
 import br.ufc.banco.dados.excecoes.CIException;
 
-public class ArrayContasTest {
+public class ArquivoContasTest {
 
-	ArrayContas array;
+	ArquivoContas contas;
 	
 	@Before
 	public void setUp() throws Exception {
-		array = new ArrayContas();
+		contas = new ArquivoContas();
 	}
 
 	@After
 	public void tearDown() throws Exception {
+		File arquivo = new File(System.getProperty("user.home") + File.separator + "Sistema Bancario" + File.separator + "contas");
+		arquivo.delete();
 	}
-	
+
 	@Test
-	public void testProcurarArrayVazio() {
-		ContaAbstrata c = array.procurar("0001");
+	public void testProcurarVazio() {
+		ContaAbstrata c = contas.procurar("11111");
 		assertNull(c);
 	}
 	
 	@Test
 	public void testInserir() throws CEException {
-		array.inserir(new Conta("0001"));
+		contas.inserir(new Conta("11111"));
 		
-		ContaAbstrata c = array.procurar("0001");
+		ContaAbstrata c = contas.procurar("11111");
 		assertNotNull(c);
 	}
 	
 	@Test (expected = CEException.class)
 	public void testInserirDuplicado() throws CEException {
-		array.inserir(new Conta("0001"));
-		array.inserir(new Conta("0001"));
+		contas.inserir(new Conta("0001"));
+		contas.inserir(new Conta("0001"));
 	}
-	
+
 	@Test (expected = CIException.class)
 	public void testApagarContaInexistente() throws CIException {
-		array.apagar("0001");
+		contas.apagar("9999");
 	}
 	
 	@Test
 	public void testApagarConta() throws CIException, CEException {
-		array.inserir(new Conta("0001"));
-		array.inserir(new Conta("0002"));
-		array.apagar("0001");
+		contas.inserir(new Conta("0004"));
+		contas.inserir(new Conta("0005"));
+		contas.apagar("0005");
 		
-		ContaAbstrata c = array.procurar("0001");
+		ContaAbstrata c = contas.procurar("0005");
 		assertNull(c);
 	}
-	
+
 	@Test
 	public void testNumeroContas() throws CEException {
-		array.inserir(new Conta("0001"));
-		array.inserir(new Conta("0002"));
-		array.inserir(new Conta("0003"));
+		contas.inserir(new Conta("0007"));
+		contas.inserir(new Conta("0008"));
+		contas.inserir(new Conta("0009"));
 		
-		assertEquals(3, array.numeroContas());
+		assertEquals(3, contas.numeroContas());
 	}
 	
 	@Test
 	public void testNumeroContasComExclusao() throws CEException, CIException {
-		array.inserir(new Conta("0001"));
-		array.inserir(new Conta("0002"));
-		array.inserir(new Conta("0003"));
-		array.apagar("0002");
-		array.inserir(new Conta("0004"));
+		contas.inserir(new Conta("0001"));
+		contas.inserir(new Conta("0002"));
+		contas.inserir(new Conta("0003"));
+		contas.apagar("0002");
+		contas.inserir(new Conta("0004"));
 		
-		assertEquals(3, array.numeroContas());
-	}
-
-	@Test
-	public void testLimiteQtdContas() throws CEException {
-		int numConta = 0;
-
-		for(int i = 0; i < 201; i++) {
-			array.inserir(new Conta(new Integer(numConta+i).toString()));
-		}
-		
-		assertEquals(201, array.numeroContas());
+		assertEquals(3, contas.numeroContas());
 	}
 	
 	@Test
 	public void testListarContas() throws CEException {
 		ContaAbstrata[] lista;
 		
-		array.inserir(new Conta("0001"));
-		array.inserir(new Conta("0002"));
-		array.inserir(new Conta("0003"));
+		contas.inserir(new Conta("0001"));
+		contas.inserir(new Conta("0002"));
+		contas.inserir(new Conta("0003"));
 		
-		lista = array.listar();
+		lista = contas.listar();
 		
 		assertEquals(3, lista.length);
 	}
@@ -108,8 +100,9 @@ public class ArrayContasTest {
 	@Test
 	public void testListarContasArrayVazio() throws CEException {
 		ContaAbstrata[] lista;
-		lista = array.listar();
+		lista = contas.listar();
 		
 		assertNull(lista);
 	}
+
 }
