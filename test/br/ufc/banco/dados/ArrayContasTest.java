@@ -4,8 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import java.util.ArrayList;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -87,11 +85,11 @@ public class ArrayContasTest {
 	public void testLimiteQtdContas() throws CEException {
 		int numConta = 0;
 
-		for(int i = 0; i <= 101; i++) {
+		for(int i = 0; i < 201; i++) {
 			array.inserir(new Conta(new Integer(numConta+i).toString()));
 		}
 		
-		assertEquals(101, array.numeroContas());
+		assertEquals(201, array.numeroContas());
 	}
 	
 	@Test
