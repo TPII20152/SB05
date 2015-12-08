@@ -1,0 +1,66 @@
+<project name="SistemaBancario" basedir="." default="test">
+	<property name="srcDir" value="src" />
+	<property name="testDir" value="test" />
+	<property name="libDir" value="libs" />
+	<property name="buildDir" value="build" />
+	<property name="reportDir" value="${buildDir}/report" />
+	<property name="classesDir" value="${buildDir}/classes" />
+	<property name="jarDir" value="${buildDir}/jar" />
+
+	<property name="mainClass" value="br.ufc.banco.bb.TAABB24H" />
+	
+	<path id="buildClasspath">
+		<pathelement location="${libDir}/junit-4.12.jar" />
+		<pathelement location="${libDir}/xmlpull-1.1.3.1.jar" />
+		<pathelement location="${libDir}/xpp3_min-1.1.4c.jar" />
+		<pathelement location="${libDir}/xstream-1.4.8.jar" />
+		<pathelement location="${classesDir}" />
+	</path>
+
+
+	<target name="clean">
+		<delete dir="${buildDir}" />
+	</target>
+
+	<target name="compile">
+		<mkdir dir="${classesDir}" />
+		<javac includeantruntime="yes" srcdir="${srcDir}" destdir="${classesDir}" />
+	</target>
+
+	<target name="test" depends="clean,compile">
+		<mkdir dir="${reportDir}" />
+		<javac includeantruntime="yes" srcdir="${testDir}" destdir="${classesDir}">
+			<classpath refid="buildClasspath" />
+		</javac>
+
+		<junit printsummary="yes" haltonfailure="no">
+			<classpath refid="buildClasspath" />
+
+			<formatter type="plain" />
+			<formatter type="xml" />
+
+			<batchtest fork="yes" todir="${reportDir}">
+				<fileset dir="${testDir}">
+					<include name="**/*Test*.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+
+	<target name="jar" depends="compile">
+		<mkdir dir="${jarDir}" />
+		<jar destfile="${jarDir}/${ant.project.name}.jar" basedir="${classesDir}">
+			<manifest>
+				<attribute name="Main-Class" value="${mainClass}" />
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="run" depends="jar">
+		<java jar="${jarDir}/${ant.project.name}.jar" fork="true" />
+	</target>
+
+	<target name="clean-build" depends="clean,jar" />
+
+	<target name="main" depends="clean,run" />
+</project>
