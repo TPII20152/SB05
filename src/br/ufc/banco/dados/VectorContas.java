@@ -24,8 +24,8 @@ public class VectorContas implements IRepositorioContas {
 	}
 
 	public void inserir(ContaAbstrata conta) throws CEException {
-		if (this.procurar(conta.obterNumero()) != null) {
-			this.contas.addElement(conta);
+		if (this.procurar(conta.obterNumero()) == null) {
+			this.contas.add(conta);
 		} else {
 			throw new CEException(conta.obterNumero());
 		}
