@@ -20,12 +20,14 @@ public class ArquivoContasTest {
 	
 	@Before
 	public void setUp() throws Exception {
+		File arquivo = new File(System.getProperty("user.home") + File.separator + "Sistema Bancario" + File.separator + "contas.xml");
+		arquivo.delete();
 		contas = new ArquivoContas();
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		File arquivo = new File(System.getProperty("user.home") + File.separator + "Sistema Bancario" + File.separator + "contas");
+		File arquivo = new File(System.getProperty("user.home") + File.separator + "Sistema Bancario" + File.separator + "contas.xml");
 		arquivo.delete();
 	}
 

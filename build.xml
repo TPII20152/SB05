@@ -8,9 +8,10 @@
 	<property name="jarDir" value="${buildDir}/jar" />
 
 	<property name="mainClass" value="br.ufc.banco.bb.TAABB24H" />
-	
+
 	<path id="buildClasspath">
 		<pathelement location="${libDir}/junit-4.12.jar" />
+		<pathelement location="${libDir}/hamcrest-core-1.3.jar" />
 		<pathelement location="${libDir}/xmlpull-1.1.3.1.jar" />
 		<pathelement location="${libDir}/xpp3_min-1.1.4c.jar" />
 		<pathelement location="${libDir}/xstream-1.4.8.jar" />
@@ -24,7 +25,9 @@
 
 	<target name="compile">
 		<mkdir dir="${classesDir}" />
-		<javac includeantruntime="yes" srcdir="${srcDir}" destdir="${classesDir}" />
+		<javac includeantruntime="yes" srcdir="${srcDir}" destdir="${classesDir}">
+			<classpath refid="buildClasspath" />
+		</javac>
 	</target>
 
 	<target name="test" depends="clean,compile">
